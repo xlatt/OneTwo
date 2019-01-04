@@ -8,8 +8,6 @@ public class ControlMovement : MonoBehaviour {
     public NavMeshAgent navMeshAgent;
     public bool moving;
     private Vector3 endPosition;
-    private float speed = 10;
-    private Rigidbody rb;
 
     void Start()
     {
