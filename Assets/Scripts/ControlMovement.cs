@@ -31,7 +31,6 @@ public class ControlMovement : MonoBehaviour {
         }
          else {
             navMeshAgent.SetDestination(endPosition);
-            //transform.position = endPosition;
             moving = true;
         }
         
