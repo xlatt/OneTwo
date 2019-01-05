@@ -43,7 +43,9 @@ public class AudioManager : MonoBehaviour {
     public void Stop()
     {
         foreach (Sound s in sounds) {
+
             if (s.source.isPlaying){
+
                 s.source.Stop();
             }
         }

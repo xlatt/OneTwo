@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Music : MonoBehaviour {
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
         FindObjectOfType<AudioManager>().Stop();
         switch (SceneManager.GetActiveScene().buildIndex) {
             case 0: {
