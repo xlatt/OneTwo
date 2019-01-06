@@ -7,16 +7,21 @@ using TMPro;
 
 public class SettingsMenu : MonoBehaviour {
 
+    public static SettingsMenu instance;
+
     public TMP_Dropdown resolutionDropdown;
     public AudioMixer audioMixer;
+    public Slider volumeSlider;
+    private float actualVolume = 0;
+
 
     Resolution[] resolutions;
-
+   
     private void Start()
     {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
-
+         
         List<string> options = new List<string>();
         int currentResolutionIndex = 0;
 
@@ -35,6 +40,7 @@ public class SettingsMenu : MonoBehaviour {
 
     }
     public void SetVolume(float volume) {
+        actualVolume = volume;
         audioMixer.SetFloat("volume", volume);
     }
 
@@ -49,6 +55,19 @@ public class SettingsMenu : MonoBehaviour {
     public void setResolution(int resolutionIndex) {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
+
+    public void muteMasterGroupMusic(bool isMuted)
+    {
+        if (isMuted){
+
+            audioMixer.SetFloat("volume", -80f);
+            volumeSlider.interactable = false;
+        }
+        else {
+            audioMixer.SetFloat("volume", actualVolume);
+            volumeSlider.interactable = true;
+        }
     }
 
 
