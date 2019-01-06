@@ -14,7 +14,7 @@ public class FindResource : MonoBehaviour {
     void Update() {
         if (foundResource) {
             
-            if (period > 0.5f)
+            if (period > 2f)
             {
                 if (gameObjects[resourceCount-1] != null)
                 {
@@ -32,9 +32,8 @@ public class FindResource : MonoBehaviour {
         private void OnTriggerEnter(Collider collInfo)
     {
         
-        if (collInfo.name == "Tree")
+        if (collInfo.name == "Resource")
         {
-            
             Debug.Log("Human Found a Resource:" + collInfo.name);
             Debug.Log("Resource:" + collInfo.gameObject.name);
             MeshRenderer meshRend = GetComponent<MeshRenderer>();
@@ -48,10 +47,7 @@ public class FindResource : MonoBehaviour {
 
     private void OnTriggerExit(Collider collInfo)
     {
-
-        // Revert the cube color to white.
-  
-        if (collInfo.name == "Tree")
+        if (collInfo.name == "Resource")
         {
             Debug.Log("Human Lost track of a Resource: " + collInfo.name);
             resourceLost(collInfo.gameObject);
