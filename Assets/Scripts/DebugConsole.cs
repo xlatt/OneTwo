@@ -3,7 +3,8 @@
 public class DebugConsole : MonoBehaviour {
 
     public static bool isConsoleOpen = false;
-    public GameObject debugConsoleUi;
+    //public GameObject debugConsoleUi;
+    public Animator animator;
     // Use this for initialization
     void Start () {
 		
@@ -16,17 +17,23 @@ public class DebugConsole : MonoBehaviour {
             {
                 consoleClose();
             }
-            else consoleOpen();
+            else
+            {
+                consoleOpen();
+            }
     }
 
     public void consoleOpen() {
-        debugConsoleUi.SetActive(true);
+        animator.SetBool("InitDown", true);
+        animator.SetBool("Up", false);
+        //debugConsoleUi.SetActive(true);
         isConsoleOpen = true;
     }
 
     public void consoleClose()
     {
-        debugConsoleUi.SetActive(false);
+        animator.SetBool("Up", true);
+        //debugConsoleUi.SetActive(false);
         isConsoleOpen = false ;
     }
 
