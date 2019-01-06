@@ -9,6 +9,9 @@ public class FindResource : MonoBehaviour {
     public bool foundResource = false;
     List<GameObject> gameObjects =  new List<GameObject>();
 
+    [SerializeField]
+    public SendLog sendLog;
+
     float period = 0;
     // Update is called once per frame
     void Update() {
@@ -34,8 +37,9 @@ public class FindResource : MonoBehaviour {
         
         if (collInfo.name == "Resource")
         {
-            Debug.Log("Human Found a Resource:" + collInfo.name);
-            Debug.Log("Resource:" + collInfo.gameObject.name);
+            sendLog.msgCasual("Human Found a Resource:" + collInfo.name);
+            sendLog.msgCasual("Resource:" + collInfo.gameObject.name);
+
             MeshRenderer meshRend = GetComponent<MeshRenderer>();
             meshRend.material.color = Color.blue;
             resourceCount++;
@@ -49,13 +53,13 @@ public class FindResource : MonoBehaviour {
     {
         if (collInfo.name == "Resource")
         {
-            Debug.Log("Human Lost track of a Resource: " + collInfo.name);
+            sendLog.msgCasual("Human Lost track of a Resource: " + collInfo.name);
             resourceLost(collInfo.gameObject);
         }
     }
 
     private void resourceLost(GameObject gameObject) {
-        Debug.Log("Resource Lost ");
+        sendLog.msgCasual("Resource Lost ");
         MeshRenderer meshRend = GetComponent<MeshRenderer>(); ;
 
         gameObjects.RemoveAt(resourceCount-1);

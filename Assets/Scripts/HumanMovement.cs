@@ -20,7 +20,7 @@ public class HumanMovement : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 
         guardHouse(rdy);
         

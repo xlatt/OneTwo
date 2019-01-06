@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ResourceController : MonoBehaviour {
 
+    [SerializeField]
+    public SendLog sendLog;
+
     private int resourceAssets;
     
 	// Use this for initialization
@@ -38,6 +41,6 @@ public class ResourceController : MonoBehaviour {
       else
             resourceAssets -= subResourceAssets;
 
-        Debug.Log("resourceAssets decreased by " + subResourceAssets + "! Actual value is : " + resourceAssets);
+        sendLog.msgCasual("resourceAssets of " + gameObject.name + " decreased by " + subResourceAssets + "! Actual value is : " + resourceAssets);
     }
 }

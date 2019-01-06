@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectClicker : MonoBehaviour {
-    
-    public LayerMask clickMask;
 
+    [SerializeField]
+    public SendLog sendLog;
+
+    public LayerMask clickMask;
     private GameObject actualObject;
     private Vector3 clickPosition;
-
     ControlMovement controlMovement;
     // Use this for initialization
     void Start() {
@@ -16,7 +17,7 @@ public class ObjectClicker : MonoBehaviour {
 }
 
     // Update is called once per frame
-    void FixedUpdate() {
+    void Update() {
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 position = Input.mousePosition;
@@ -29,7 +30,8 @@ public class ObjectClicker : MonoBehaviour {
                 {
                     clickPosition = hit.point;
                     setActualObject(hit.transform.gameObject);
-                    Debug.LogError("mouse clickPosition: " + clickPosition);
+
+                    sendLog.msgCasual("mouse clickPosition: " + clickPosition);
 
                 }
             }
@@ -46,8 +48,8 @@ public class ObjectClicker : MonoBehaviour {
                     if (hit.transform != null)
                     {
                         clickPosition = hit.point;
-                        Debug.LogError("startPosition: " + actualObject.transform.position);
-                        Debug.LogError("mouse clickPosition: " + clickPosition);
+                        sendLog.msgCasual("startPosition: " + actualObject.transform.position);
+                        sendLog.msgCasual("mouse clickPosition: " + clickPosition);
                         
                         actualObject.SendMessage("setEndPosition", clickPosition);
                         actualObject.SendMessage("setMoving", true);
@@ -65,7 +67,7 @@ public class ObjectClicker : MonoBehaviour {
     }
     private void setActualObject(GameObject go)
     {
-        print(go.name);
+        sendLog.msgCasual(go.name);
         actualObject = go;
     }
 }
