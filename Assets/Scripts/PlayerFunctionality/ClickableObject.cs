@@ -10,6 +10,9 @@ public class ClickableObject : MonoBehaviour {
     [SerializeField]
     private Material isClicked;
 
+    [SerializeField]
+    private SendLog sendLog;
+
     [HideInInspector]
     public bool currentlySelected = false;
 
@@ -25,12 +28,14 @@ public class ClickableObject : MonoBehaviour {
         if (currentlySelected.Equals(false)) {
             myRenderer.material = isClicked;
             currentlySelected = true;
+            sendLog.msgCasual("Object Highlight ON.");
         }
     }
 
     public void unclickMe() {
         currentlySelected = false;
         myRenderer.material = isNotClicked;
+        sendLog.msgCasual("Object Highlight OFF.");
     }
 
 }

@@ -28,17 +28,17 @@ public class SendLog : MonoBehaviour {
 
     public void msgError(string messageText)
     {
-        logControl.logText(messageText, Color.red);
+        logControl.logText("[ERROR] " + messageText, Color.red);
 
     }
     public void msgWarning(string messageText) {
-        logControl.logText(messageText, Color.yellow);
+        logControl.logText("[WARN] " + messageText, Color.yellow);
 
     }
     public void msgCasual(string messageText)
     {
         Debug.Log(messageText);
-        logControl.logText(messageText, Color.white);
+        logControl.logText("[INFO] " + messageText, Color.white);
 
     }
     
