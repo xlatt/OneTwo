@@ -22,20 +22,22 @@ public class ClickableObject : MonoBehaviour {
     // Use this for initialization
     void Start () {
         myRenderer = GetComponent<MeshRenderer>();
-	}
+        Camera.main.gameObject.GetComponent<ObjectClicker>().selectableObjects.Add(this.gameObject);
+
+    }
 
     public void clickMe() {
-        if (currentlySelected.Equals(false)) {
+        if (currentlySelected.Equals(true))
+        {
             myRenderer.material = isClicked;
-            currentlySelected = true;
+            
             sendLog.msgCasual("Object Highlight ON.");
+        }
+        else {
+            myRenderer.material = isNotClicked;
+            sendLog.msgCasual("Object Highlight OFF.");
         }
     }
 
-    public void unclickMe() {
-        currentlySelected = false;
-        myRenderer.material = isNotClicked;
-        sendLog.msgCasual("Object Highlight OFF.");
-    }
 
 }

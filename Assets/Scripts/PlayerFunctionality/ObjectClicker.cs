@@ -7,39 +7,88 @@ public class ObjectClicker : MonoBehaviour {
     [SerializeField]
     public SendLog sendLog;
 
+
+    [HideInInspector]
+    public List<GameObject> selectableObjects;
+    public List<GameObject> selectedObjects;
+
+    [HideInInspector]
     public LayerMask clickMask;
-    private GameObject actualObject;
+
+    private Vector3 mPos1;
+    private Vector3 mPos2;
+    
     private Vector3 clickPosition;
     ControlMovement controlMovement;
     // Use this for initialization
-    void Start() {
-        
-}
+    void Awake() {
+        selectedObjects = new List<GameObject>();
+        selectableObjects = new List<GameObject>();
+    }
 
     // Update is called once per frame
     void Update() {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 position = Input.mousePosition;
-            Ray ray = Camera.main.ScreenPointToRay(position);
+
+            mPos1 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            
+
             if (Physics.Raycast(ray, out hit, 100.0f))
             {
                 if (hit.transform != null)
                 {
+                    GameObject foundGameObject = hit.collider.gameObject;
+                    ClickableObject clickableObjectScript = foundGameObject.GetComponent<ClickableObject>();
+
+                    if (Input.GetKey(KeyCode.LeftControl) && foundGameObject.tag.Equals("Controllable"))
+                    {
+                        if (clickableObjectScript.currentlySelected == false)
+                        {
+                            selectedObjects.Add(foundGameObject);
+                            clickableObjectScript.currentlySelected = true;
+                            clickableObjectScript.clickMe();
+                        }
+                        else
+                        {
+                            selectedObjects.Remove(foundGameObject);
+                            clickableObjectScript.currentlySelected = false;
+                            clickableObjectScript.clickMe();
+                        }
+                    }
+                    else
+                    {
+                        clearSelection();
+
+                        if (foundGameObject.tag.Equals("Controllable"))
+                        {
+                            selectedObjects.Add(foundGameObject);
+                            clickableObjectScript.currentlySelected = true;
+                            clickableObjectScript.clickMe();
+                        }
+
+
+
+
+                    }
                     clickPosition = hit.point;
-                    setActualObject(hit.transform.gameObject);
-
                     sendLog.msgCasual("mouse clickPosition: " + clickPosition);
-
                 }
+            }
+        }
+        if (Input.GetMouseButtonUp(0)) {
+            mPos2 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            if (mPos1 != mPos2) {
+                selectObjects();
+
             }
         }
 
         else if (Input.GetMouseButtonDown(1))
         {
-            if (actualObject.name.Equals("Human")) {
+            if (selectedObjects.Count > 0) {
+
                 Vector3 position = Input.mousePosition;
                 Ray ray = Camera.main.ScreenPointToRay(position);
                 RaycastHit hit;
@@ -48,35 +97,78 @@ public class ObjectClicker : MonoBehaviour {
                     if (hit.transform != null)
                     {
                         clickPosition = hit.point;
-                        sendLog.msgCasual("startPosition: " + actualObject.transform.position);
+                        foreach(GameObject obj in selectedObjects)
+                        {
+                            sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
+                            
+                            obj.SendMessage("setEndPosition", clickPosition);
+                            obj.SendMessage("setMoving", true);
+                        }
                         sendLog.msgCasual("mouse clickPosition: " + clickPosition);
 
-                        actualObject.SendMessage("setEndPosition", clickPosition);
-                        actualObject.SendMessage("setMoving", true);
-                        
+
                     }
                 }
-                
-               
-                
+
             }
+
+               
+
         }
 
-      
+
 
     }
-    private void setActualObject(GameObject go)
-    {
-        
-        sendLog.msgCasual(go.name);
-        if (actualObject != null)
+
+    private void clearSelection() {
+        if (selectedObjects.Count > 0)
         {
-            if (!actualObject.Equals(go) && actualObject.tag.Equals("Controllable"))
-                actualObject.SendMessage("unclickMe");
+            foreach (GameObject obj in selectedObjects)
+            {
+                obj.GetComponent<ClickableObject>().currentlySelected = false;
+                obj.GetComponent<ClickableObject>().clickMe();
+            }
+            selectedObjects.Clear();
         }
-        actualObject = go;
-        if(actualObject.tag.Equals("Controllable"))
-            
-            actualObject.SendMessage("clickMe");
+
     }
+
+    private void selectObjects()
+    {
+        List<GameObject> removeObjects = new List<GameObject>();
+
+        if (Input.GetKey(KeyCode.LeftControl) == false)
+        {
+            clearSelection();
+        }
+
+        Rect selectRect = new Rect(mPos1.x, mPos1.y, mPos2.x - mPos1.x, mPos2.y - mPos1.y);
+        
+        foreach (GameObject obj in selectableObjects)
+        {
+            if (obj != null)
+            {
+
+                if (selectRect.Contains(Camera.main.WorldToViewportPoint(obj.transform.position), true))
+                {
+                    selectedObjects.Add(obj);
+                    obj.GetComponent<ClickableObject>().currentlySelected = true;
+                    obj.GetComponent<ClickableObject>().clickMe();
+                }
+            }
+            else
+            {
+                removeObjects.Add(obj);
+            }
+
+        }
+        if (removeObjects.Count > 0) {
+            foreach (GameObject obj in removeObjects) {
+                selectableObjects.Remove(obj);
+            }
+            removeObjects.Clear();
+        }
+    }
+
+
 }
