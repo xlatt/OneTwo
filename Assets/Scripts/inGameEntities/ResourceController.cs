@@ -35,11 +35,16 @@ public class ResourceController : MonoBehaviour {
 
     public void decreaseResourceAssets(int subResourceAssets)
     {
-      if(subResourceAssets >= resourceAssets) {
+        if (subResourceAssets >= resourceAssets)
+        {
+            FindObjectOfType<PlayerData>().addResources(resourceAssets);
             resourceAssets = 0;
         }
-      else
+        else
+        {
             resourceAssets -= subResourceAssets;
+            FindObjectOfType<PlayerData>().addResources(subResourceAssets);
+        }
 
         sendLog.msgCasual("resourceAssets of " + gameObject.name + " decreased by " + subResourceAssets + "! Actual value is : " + resourceAssets);
     }

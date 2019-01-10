@@ -22,7 +22,6 @@ public class FindResource : MonoBehaviour {
                 if (gameObjects[resourceCount-1] != null)
                 {
                     gameObjects[resourceCount-1].SendMessage("decreaseResourceAssets", assetDecreaser);
-                    FindObjectOfType<PlayerData>().addResources(assetDecreaser);
                 }
                else resourceLost(gameObjects[resourceCount-1]);
                 

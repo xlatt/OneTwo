@@ -1,13 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using UnityEngine.AI;
 
-public class ControlMovement : MonoBehaviour {
+
+
+public class MovementController : MonoBehaviour {
     public NavMeshAgent navMeshAgent;
     public bool moving;
     private Vector3 endPosition;
+    
 
     void Start()
     {
@@ -18,7 +19,7 @@ public class ControlMovement : MonoBehaviour {
         
          if (moving) move();
     }
-
+   
     public void move()
     {
 

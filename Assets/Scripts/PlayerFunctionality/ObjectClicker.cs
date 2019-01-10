@@ -15,11 +15,13 @@ public class ObjectClicker : MonoBehaviour {
     [HideInInspector]
     public LayerMask clickMask;
 
+   
+
     private Vector3 mPos1;
     private Vector3 mPos2;
     
     private Vector3 clickPosition;
-    ControlMovement controlMovement;
+    MovementController MovementController;
     // Use this for initialization
     void Awake() {
         selectedObjects = new List<GameObject>();
@@ -87,38 +89,93 @@ public class ObjectClicker : MonoBehaviour {
 
         else if (Input.GetMouseButtonDown(1))
         {
-            if (selectedObjects.Count > 0) {
+            if (selectedObjects.Count > 0)
+            {
 
                 Vector3 position = Input.mousePosition;
                 Ray ray = Camera.main.ScreenPointToRay(position);
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 100.0f, clickMask))
                 {
-                    if (hit.transform != null)
-                    {
-                        clickPosition = hit.point;
-                        foreach(GameObject obj in selectedObjects)
-                        {
-                            sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
-                            
-                            obj.SendMessage("setEndPosition", clickPosition);
-                            obj.SendMessage("setMoving", true);
-                        }
-                        sendLog.msgCasual("mouse clickPosition: " + clickPosition);
+                   moveObjects(hit);
+                }
+            }
+        }
+    }
 
 
-                    }
+    private void moveObjects(RaycastHit endPosition)
+    {
+        if (endPosition.transform != null)
+        {
+            clickPosition = endPosition.point;
+            // sendLog.msgCasual("EndClick position: " + clickPosition);
+            int selectedUnits = selectedObjects.Count;
+            int i = 0;
+            int maxRow = 4;
+
+
+
+            float unitOffsetConstX = 3f;
+            float unitOffsetConstZ = 2.5f;
+            float unitOffsetX = 0f;
+            float unitOffsetZ = 0f;
+
+            float centerMouseClickX;
+
+            if (selectedUnits < maxRow)
+                centerMouseClickX = (unitOffsetConstX * (selectedUnits - 1)) / 2;
+            else
+                centerMouseClickX = (unitOffsetConstX * (maxRow - 1)) / 2;
+
+
+
+            //  sendLog.msgCasual(selectedUnits + "  units currently moving!");
+            foreach (GameObject obj in selectedObjects)
+            {
+                Vector3 newUnitPosition = clickPosition;
+
+                newUnitPosition.x -= centerMouseClickX;
+
+                if (i < maxRow)
+                {
+                    newUnitPosition.x += unitOffsetX;
+                    newUnitPosition.z += unitOffsetZ;
+
+                    // sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
+                    obj.GetComponent<MovementController>().setEndPosition(newUnitPosition);
+                    obj.GetComponent<MovementController>().setMoving();
+                    // sendLog.msgCasual(" i=" + i + " unit position: " + newUnitPosition);
+
+                    unitOffsetX += unitOffsetConstX;
+                    i++;
+                }
+                else
+                {
+                    i = 0;
+
+                    unitOffsetX = 0;
+                    unitOffsetZ += unitOffsetConstZ;
+
+                    // sendLog.msgCasual("  sqrt = " + (int)(Mathf.Sqrt(selectedUnits)));
+
+                    newUnitPosition.x += unitOffsetX;
+                    newUnitPosition.z += unitOffsetZ;
+
+                    //  sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
+                    obj.GetComponent<MovementController>().setEndPosition(newUnitPosition);
+                    obj.GetComponent<MovementController>().setMoving();
+                    //  sendLog.msgCasual(" i=" + i + " unit position starting new row: " + newUnitPosition);
+
+                    unitOffsetX += unitOffsetConstX;
+                    i++;
                 }
 
             }
-
-               
-
         }
 
-
-
     }
+
 
     private void clearSelection() {
         if (selectedObjects.Count > 0)
