@@ -8,6 +8,9 @@ public class ClickableObject : MonoBehaviour {
     private Material isNotClicked;
 
     [SerializeField]
+    private bool isStructure;
+
+    [SerializeField]
     private Material isClicked;
 
     [SerializeField]
@@ -24,6 +27,15 @@ public class ClickableObject : MonoBehaviour {
         myRenderer = GetComponent<MeshRenderer>();
         Camera.main.gameObject.GetComponent<ObjectClicker>().selectableObjects.Add(this.gameObject);
 
+    }
+
+    public bool getIsStructure() {
+        return isStructure;
+    }
+
+    public void setIsStructure(bool newIsStructure)
+    {
+        isStructure = newIsStructure;
     }
 
     public void clickMe() {

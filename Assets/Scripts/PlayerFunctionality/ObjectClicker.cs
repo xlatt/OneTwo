@@ -32,7 +32,6 @@ public class ObjectClicker : MonoBehaviour {
     void Update() {
         if (Input.GetMouseButtonDown(0))
         {
-
             mPos1 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -43,14 +42,21 @@ public class ObjectClicker : MonoBehaviour {
                 {
                     GameObject foundGameObject = hit.collider.gameObject;
                     ClickableObject clickableObjectScript = foundGameObject.GetComponent<ClickableObject>();
-
+                    
                     if (Input.GetKey(KeyCode.LeftControl) && foundGameObject.tag.Equals("Controllable"))
                     {
                         if (clickableObjectScript.currentlySelected == false)
                         {
-                            selectedObjects.Add(foundGameObject);
-                            clickableObjectScript.currentlySelected = true;
-                            clickableObjectScript.clickMe();
+                            ;
+
+                            if (foundStructureInSelected(selectedObjects).Equals(true))
+                                clearSelection();
+                            if (!foundGameObject.GetComponent<ClickableObject>().getIsStructure())
+                            {
+                                selectedObjects.Add(foundGameObject);
+                                clickableObjectScript.currentlySelected = true;
+                                clickableObjectScript.clickMe();
+                            }
                         }
                         else
                         {
@@ -62,36 +68,30 @@ public class ObjectClicker : MonoBehaviour {
                     else
                     {
                         clearSelection();
-
+                        sendLog.msgCasual("Found game object: " + foundGameObject.name);
                         if (foundGameObject.tag.Equals("Controllable"))
                         {
                             selectedObjects.Add(foundGameObject);
                             clickableObjectScript.currentlySelected = true;
                             clickableObjectScript.clickMe();
                         }
-
-
-
-
                     }
                     clickPosition = hit.point;
                     sendLog.msgCasual("mouse clickPosition: " + clickPosition);
                 }
             }
         }
+
         if (Input.GetMouseButtonUp(0)) {
             mPos2 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
             if (mPos1 != mPos2) {
                 selectObjects();
-
             }
         }
-
         else if (Input.GetMouseButtonDown(1))
         {
             if (selectedObjects.Count > 0)
             {
-
                 Vector3 position = Input.mousePosition;
                 Ray ray = Camera.main.ScreenPointToRay(position);
                 RaycastHit hit;
@@ -102,7 +102,7 @@ public class ObjectClicker : MonoBehaviour {
             }
         }
     }
-    
+
     private void moveObjects(RaycastHit endPosition)
     {
         if (endPosition.transform != null)
@@ -112,8 +112,6 @@ public class ObjectClicker : MonoBehaviour {
             int selectedUnits = selectedObjects.Count;
             int i = 0;
             int maxRow = 4;
-
-
 
             float unitOffsetConstX = 3f;
             float unitOffsetConstZ = 2.5f;
@@ -126,14 +124,11 @@ public class ObjectClicker : MonoBehaviour {
                 centerMouseClickX = (unitOffsetConstX * (selectedUnits - 1)) / 2;
             else
                 centerMouseClickX = (unitOffsetConstX * (maxRow - 1)) / 2;
-
-
-
+            
               sendLog.msgCasual(selectedUnits + "  units currently moving!");
             foreach (GameObject obj in selectedObjects)
             {
                 Vector3 newUnitPosition = clickPosition;
-
                 newUnitPosition.x -= centerMouseClickX;
 
                 if (i < maxRow)
@@ -152,12 +147,9 @@ public class ObjectClicker : MonoBehaviour {
                 else
                 {
                     i = 0;
-
                     unitOffsetX = 0;
                     unitOffsetZ += unitOffsetConstZ;
-
-                     sendLog.msgCasual("  sqrt = " + (int)(Mathf.Sqrt(selectedUnits)));
-
+                    
                     newUnitPosition.x += unitOffsetX;
                     newUnitPosition.z += unitOffsetZ;
 
@@ -175,8 +167,7 @@ public class ObjectClicker : MonoBehaviour {
         }
 
     }
-
-
+    
     private void clearSelection() {
         if (selectedObjects.Count > 0)
         {
@@ -187,7 +178,16 @@ public class ObjectClicker : MonoBehaviour {
             }
             selectedObjects.Clear();
         }
+    }
 
+    private bool foundStructureInSelected(List<GameObject> selectedObjects) {
+        bool match = false;
+        foreach (GameObject obj in selectedObjects)
+        {
+            if (obj.GetComponent<ClickableObject>().getIsStructure())
+                match = true;
+        }
+        return match;
     }
 
     private void selectObjects()
@@ -198,7 +198,6 @@ public class ObjectClicker : MonoBehaviour {
         {
             clearSelection();
         }
-
         Rect selectRect = new Rect(mPos1.x, mPos1.y, mPos2.x - mPos1.x, mPos2.y - mPos1.y);
         
         foreach (GameObject obj in selectableObjects)
@@ -208,16 +207,18 @@ public class ObjectClicker : MonoBehaviour {
 
                 if (selectRect.Contains(Camera.main.WorldToViewportPoint(obj.transform.position), true))
                 {
-                    selectedObjects.Add(obj);
-                    obj.GetComponent<ClickableObject>().currentlySelected = true;
-                    obj.GetComponent<ClickableObject>().clickMe();
+                    if (!obj.GetComponent<ClickableObject>().getIsStructure())
+                    {
+                        selectedObjects.Add(obj);
+                        obj.GetComponent<ClickableObject>().currentlySelected = true;
+                        obj.GetComponent<ClickableObject>().clickMe();
+                    }
                 }
             }
             else
             {
                 removeObjects.Add(obj);
             }
-
         }
         if (removeObjects.Count > 0) {
             foreach (GameObject obj in removeObjects) {
