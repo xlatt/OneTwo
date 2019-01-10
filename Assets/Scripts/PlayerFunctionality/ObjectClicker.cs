@@ -102,8 +102,7 @@ public class ObjectClicker : MonoBehaviour {
             }
         }
     }
-
-
+    
     private void moveObjects(RaycastHit endPosition)
     {
         if (endPosition.transform != null)
@@ -130,7 +129,7 @@ public class ObjectClicker : MonoBehaviour {
 
 
 
-            //  sendLog.msgCasual(selectedUnits + "  units currently moving!");
+              sendLog.msgCasual(selectedUnits + "  units currently moving!");
             foreach (GameObject obj in selectedObjects)
             {
                 Vector3 newUnitPosition = clickPosition;
@@ -142,10 +141,10 @@ public class ObjectClicker : MonoBehaviour {
                     newUnitPosition.x += unitOffsetX;
                     newUnitPosition.z += unitOffsetZ;
 
-                    // sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
+                    sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
                     obj.GetComponent<MovementController>().setEndPosition(newUnitPosition);
                     obj.GetComponent<MovementController>().setMoving();
-                    // sendLog.msgCasual(" i=" + i + " unit position: " + newUnitPosition);
+                    sendLog.msgCasual(" i=" + i + " unit position: " + newUnitPosition);
 
                     unitOffsetX += unitOffsetConstX;
                     i++;
@@ -157,19 +156,20 @@ public class ObjectClicker : MonoBehaviour {
                     unitOffsetX = 0;
                     unitOffsetZ += unitOffsetConstZ;
 
-                    // sendLog.msgCasual("  sqrt = " + (int)(Mathf.Sqrt(selectedUnits)));
+                     sendLog.msgCasual("  sqrt = " + (int)(Mathf.Sqrt(selectedUnits)));
 
                     newUnitPosition.x += unitOffsetX;
                     newUnitPosition.z += unitOffsetZ;
 
-                    //  sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
+                    sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
                     obj.GetComponent<MovementController>().setEndPosition(newUnitPosition);
                     obj.GetComponent<MovementController>().setMoving();
-                    //  sendLog.msgCasual(" i=" + i + " unit position starting new row: " + newUnitPosition);
+                    sendLog.msgCasual(" i=" + i + " unit position starting new row: " + newUnitPosition);
 
                     unitOffsetX += unitOffsetConstX;
                     i++;
                 }
+               
 
             }
         }
