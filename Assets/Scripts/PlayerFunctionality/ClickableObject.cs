@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ClickableObject : MonoBehaviour {
 
+
+    [SerializeField]
+    private PanelController panelController;
+    
     [SerializeField]
     private Material isNotClicked;
 
@@ -41,8 +45,9 @@ public class ClickableObject : MonoBehaviour {
     public void clickMe() {
         if (currentlySelected.Equals(true))
         {
+            panelController.showPanel("LAction Panel");
+
             myRenderer.material = isClicked;
-            
             sendLog.msgCasual("Object Highlight ON.");
         }
         else {

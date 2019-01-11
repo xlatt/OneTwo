@@ -5,14 +5,17 @@ using UnityEngine.AI;
 
 
 public class MovementController : MonoBehaviour {
+
     [SerializeField]
     GameObject destinatiomMarker;
+
     [SerializeField]
     public NavMeshAgent navMeshAgent;
 
     [HideInInspector]
     private bool moving;
-    
+
+    [HideInInspector]
     private Vector3 endPosition;
 
     void Update () {
