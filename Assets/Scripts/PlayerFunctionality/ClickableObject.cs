@@ -51,5 +51,9 @@ public class ClickableObject : MonoBehaviour {
         }
     }
 
+    public bool getcurrentlySelected() {
+        return currentlySelected;
+    }
+
 
 }

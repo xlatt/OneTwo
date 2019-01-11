@@ -12,7 +12,8 @@ public class FindResource : MonoBehaviour {
     [SerializeField]
     public SendLog sendLog;
 
-    float period = 0;
+    [HideInInspector]
+    private float period = 0;
     // Update is called once per frame
     void Update() {
         if (foundResource) {

@@ -11,14 +11,9 @@ public class MovementController : MonoBehaviour {
     public NavMeshAgent navMeshAgent;
 
     [HideInInspector]
-    public bool moving;
+    private bool moving;
     
     private Vector3 endPosition;
-    
-    void Start()
-    {
-        moving = false;
-    }
 
     void Update () {
         
@@ -61,7 +56,8 @@ public class MovementController : MonoBehaviour {
 
     public void setMoving()
     {
-       moving = true;
+       
+        moving = true;
     }
     public void setEndPosition(Vector3 endPosition)
     {

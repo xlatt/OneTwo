@@ -12,7 +12,7 @@ public class ObjectClicker : MonoBehaviour {
     public List<GameObject> selectableObjects;
     public List<GameObject> selectedObjects;
 
-    [HideInInspector]
+    [SerializeField]
     public LayerMask clickMask;
 
    
@@ -36,7 +36,7 @@ public class ObjectClicker : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 100.0f))
+            if (Physics.Raycast(ray, out hit, 100.0f, clickMask ))
             {
                 if (hit.transform != null)
                 {
@@ -118,6 +118,7 @@ public class ObjectClicker : MonoBehaviour {
             BuildingController buildingController = gameObject.GetComponent<BuildingController>();
 
             clickPosition = hit.point;
+            sendLog.msgCasual(gameObject.name + " is setting spawnpoint to: " + clickPosition);
             buildingController.setSpawnPoint(clickPosition);
          }
     }
@@ -158,7 +159,6 @@ public class ObjectClicker : MonoBehaviour {
                     sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
                     movementController.setEndPosition(newUnitPosition);
                     movementController.setMoving();
-                    sendLog.msgCasual(" i=" + i + " unit position: " + newUnitPosition);
 
                     unitOffsetX += unitOffsetConstX;
                     i++;
