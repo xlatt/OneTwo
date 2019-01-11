@@ -90,7 +90,17 @@ public class ObjectClicker : MonoBehaviour {
         }
         else if (Input.GetMouseButtonDown(1))
         {
-            if (selectedObjects.Count > 0)
+            if (selectedObjects.Count.Equals(1) && selectedObjects[0].GetComponent<ClickableObject>().getIsStructure())
+            {
+                Vector3 position = Input.mousePosition;
+                Ray ray = Camera.main.ScreenPointToRay(position);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 100.0f, clickMask))
+                {
+                    setSpawnpoint(selectedObjects[0], hit);
+                }
+            }
+            else if (selectedObjects.Count > 0)
             {
                 Vector3 position = Input.mousePosition;
                 Ray ray = Camera.main.ScreenPointToRay(position);
@@ -101,6 +111,15 @@ public class ObjectClicker : MonoBehaviour {
                 }
             }
         }
+    }
+
+    private void setSpawnpoint(GameObject gameObject, RaycastHit hit) {
+        if (gameObject.GetComponent<ClickableObject>().getIsStructure()) {
+            BuildingController buildingController = gameObject.GetComponent<BuildingController>();
+
+            clickPosition = hit.point;
+            buildingController.setSpawnPoint(clickPosition);
+         }
     }
 
     private void moveObjects(RaycastHit endPosition)
@@ -130,15 +149,15 @@ public class ObjectClicker : MonoBehaviour {
             {
                 Vector3 newUnitPosition = clickPosition;
                 newUnitPosition.x -= centerMouseClickX;
-
+                MovementController movementController = obj.GetComponent<MovementController>();
                 if (i < maxRow)
                 {
                     newUnitPosition.x += unitOffsetX;
                     newUnitPosition.z += unitOffsetZ;
 
                     sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
-                    obj.GetComponent<MovementController>().setEndPosition(newUnitPosition);
-                    obj.GetComponent<MovementController>().setMoving();
+                    movementController.setEndPosition(newUnitPosition);
+                    movementController.setMoving();
                     sendLog.msgCasual(" i=" + i + " unit position: " + newUnitPosition);
 
                     unitOffsetX += unitOffsetConstX;
@@ -154,18 +173,15 @@ public class ObjectClicker : MonoBehaviour {
                     newUnitPosition.z += unitOffsetZ;
 
                     sendLog.msgCasual("startPosition of obj: " + obj.transform.position);
-                    obj.GetComponent<MovementController>().setEndPosition(newUnitPosition);
-                    obj.GetComponent<MovementController>().setMoving();
+                    movementController.setEndPosition(newUnitPosition);
+                    movementController.setMoving();
                     sendLog.msgCasual(" i=" + i + " unit position starting new row: " + newUnitPosition);
 
                     unitOffsetX += unitOffsetConstX;
                     i++;
                 }
-               
-
             }
         }
-
     }
     
     private void clearSelection() {

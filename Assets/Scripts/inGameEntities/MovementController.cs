@@ -13,7 +13,6 @@ public class MovementController : MonoBehaviour {
     [HideInInspector]
     public bool moving;
     
-
     private Vector3 endPosition;
     
     void Start()
