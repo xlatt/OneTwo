@@ -12,10 +12,7 @@ public class BuildingController : MonoBehaviour {
 
     [HideInInspector]
     private Vector3 spawnPointPosition;
-
-    [HideInInspector]
-    private Quaternion unitQuaternion = new Quaternion();
-
+    
     [SerializeField]
     private GameObject spawnPoint;
 
@@ -25,20 +22,16 @@ public class BuildingController : MonoBehaviour {
     [HideInInspector]
     private float period = 0;
 
-    [HideInInspector]
-    GameObject generatedUnit;
 
     [HideInInspector]
     string structureName = "Barracks";
-
-
-    // Use this for initialization
+    
     void Start() {
-        spawnPointPosition.Set(0, 0, 0);
+        initbuildingPosition();
+        setSpawnPoint(initSpawnPosition());
         spawnPoint.SetActive(false);
     }
-
-    // Update is called once per frame
+    
     void Update() {
         if (spawnPoint.activeSelf) {
             if (period > 2f)
@@ -48,14 +41,12 @@ public class BuildingController : MonoBehaviour {
             }
             period += UnityEngine.Time.deltaTime;
         }
-
         if (gameObject.GetComponent<ClickableObject>().getcurrentlySelected())
         {
             panelController.showPanel(structureName);
-
         }
-
     }
+    
     //[Begin]----------------BuildingDefinition---------------------------\\
     public void setStructureName(string structure) {
             structureName = structure;
@@ -89,21 +80,14 @@ public class BuildingController : MonoBehaviour {
         spawnPoint.SetActive(false);
     }
     //[End]----------------SpawnPointMethods------------------------\\
-    //[Begin]----------------UnitSpawner---------------------------\\
-    public void spawnUnit() {
-        generatedUnit = GameObject.Instantiate(unit, initSpawnPosition(), unitQuaternion);
-
-        generatedUnit.GetComponent<MovementController>().setEndPosition(getSpawnPoint());
-        generatedUnit.GetComponent<MovementController>().setMoving();
-    }
-    //[End]----------------UnitSpawner---------------------------\\
+    
     private void initbuildingPosition() {
         buildingPosition = gameObject.transform.position;
         
 
     }
 
-    private Vector3 initSpawnPosition() {
+    public Vector3 initSpawnPosition() {
         initbuildingPosition();
         Vector3 position = buildingPosition;
         position.x += 4;
@@ -111,4 +95,3 @@ public class BuildingController : MonoBehaviour {
         return position;
     }
 }
-
