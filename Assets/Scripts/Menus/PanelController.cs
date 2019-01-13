@@ -9,6 +9,9 @@ public class PanelController : MonoBehaviour {
     private GameObject barracksPanel;
 
     [SerializeField]
+    private GameObject buildingPanel;
+
+    [SerializeField]
     private GameObject leftActionPanel;
 
     [HideInInspector]
@@ -16,6 +19,7 @@ public class PanelController : MonoBehaviour {
     void Start()
     {
         panelList.Add(barracksPanel);
+        panelList.Add(buildingPanel);
         panelList.Add(leftActionPanel);
     }
 
@@ -32,22 +36,32 @@ public class PanelController : MonoBehaviour {
             panel.SetActive(true);
         }
     }
-    public void hidePanel(GameObject panel)
+    public void hidePanel(string panelName)
     {
-        panel.SetActive(false);
+        selectPanel(panelName).SetActive(false);
+    }
+
+    public bool isActivaPanel(string panelName)
+    {
+        return selectPanel(panelName).activeSelf;
     }
 
     private GameObject selectPanel(string panelName) {
         GameObject panel = null;
 
         switch (panelName) {
-            case "Barracks Panel": {
+            case "Barracks": {
                     panel = barracksPanel;
                     break;
                 }
-            case "LAction Panel":
+            case "LAction":
                 {
                     panel = leftActionPanel;
+                    break;
+                }
+            case "Building":
+                {
+                    panel = buildingPanel;
                     break;
                 }
             default: break;

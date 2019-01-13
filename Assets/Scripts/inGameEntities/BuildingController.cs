@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingController : MonoBehaviour {
-
     
-
     [SerializeField]
     private PanelController panelController;
 
@@ -29,7 +27,10 @@ public class BuildingController : MonoBehaviour {
 
     [HideInInspector]
     GameObject generatedUnit;
-    
+
+    [HideInInspector]
+    string structureName = "Barracks";
+
 
     // Use this for initialization
     void Start() {
@@ -50,11 +51,21 @@ public class BuildingController : MonoBehaviour {
 
         if (gameObject.GetComponent<ClickableObject>().getcurrentlySelected())
         {
-            panelController.showPanel("Barracks Panel");
+            panelController.showPanel(structureName);
 
         }
 
     }
+    //[Begin]----------------BuildingDefinition---------------------------\\
+    public void setStructureName(string structure) {
+            structureName = structure;
+        }
+        public string getStructureName(){
+                return structureName;  
+        }
+
+    //[End]----------------BuildingDefinition---------------------------\\
+
     //[Begin]----------------SpawnPointMethods------------------------\\
     public void setSpawnPoint(Vector3 newSpawnPointPosition) {
         spawnPointPosition = newSpawnPointPosition;
@@ -78,17 +89,13 @@ public class BuildingController : MonoBehaviour {
         spawnPoint.SetActive(false);
     }
     //[End]----------------SpawnPointMethods------------------------\\
-
     //[Begin]----------------UnitSpawner---------------------------\\
-    
-
     public void spawnUnit() {
         generatedUnit = GameObject.Instantiate(unit, initSpawnPosition(), unitQuaternion);
 
         generatedUnit.GetComponent<MovementController>().setEndPosition(getSpawnPoint());
         generatedUnit.GetComponent<MovementController>().setMoving();
     }
-
     //[End]----------------UnitSpawner---------------------------\\
     private void initbuildingPosition() {
         buildingPosition = gameObject.transform.position;

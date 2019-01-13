@@ -45,7 +45,7 @@ public class ClickableObject : MonoBehaviour {
     public void clickMe() {
         if (currentlySelected.Equals(true))
         {
-            panelController.showPanel("LAction Panel");
+            panelController.showPanel("LAction");
 
             myRenderer.material = isClicked;
             sendLog.msgCasual("Object Highlight ON.");
