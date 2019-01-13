@@ -27,7 +27,8 @@ public class ClickableObject : MonoBehaviour {
 
     
     // Use this for initialization
-    void Start () {
+    void Awake () {
+       // currentlySelected = false;
         myRenderer = GetComponent<MeshRenderer>();
         Camera.main.gameObject.GetComponent<ObjectClicker>().selectableObjects.Add(this.gameObject);
 
@@ -46,9 +47,9 @@ public class ClickableObject : MonoBehaviour {
         if (currentlySelected.Equals(true))
         {
             panelController.showPanel("LAction");
-
-            myRenderer.material = isClicked;
-            sendLog.msgCasual("Object Highlight ON.");
+           
+                myRenderer.material = isClicked;
+                sendLog.msgCasual("Object Highlight ON.");
         }
         else {
             myRenderer.material = isNotClicked;

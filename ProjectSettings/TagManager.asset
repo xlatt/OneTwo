@@ -9,6 +9,7 @@ TagManager:
   - FullscreenToggle
   - VolumeSlider
   - Controllable
+  - ShadowBuilding
   layers:
   - Default
   - TransparentFX

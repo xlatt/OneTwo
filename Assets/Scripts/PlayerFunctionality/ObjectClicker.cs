@@ -47,8 +47,6 @@ public class ObjectClicker : MonoBehaviour {
                     {
                         if (clickableObjectScript.currentlySelected == false)
                         {
-                            ;
-
                             if (foundStructureInSelected(selectedObjects).Equals(true))
                                 clearSelection();
                             if (!foundGameObject.GetComponent<ClickableObject>().getIsStructure())
@@ -242,7 +240,10 @@ public class ObjectClicker : MonoBehaviour {
             }
             removeObjects.Clear();
         }
+
+
     }
+    
 
 
 }
