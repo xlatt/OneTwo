@@ -10,22 +10,31 @@ public class FindResource : MonoBehaviour {
     List<GameObject> gameObjects =  new List<GameObject>();
 
     [SerializeField]
+    private GameObject parentUnit;
+
+    [SerializeField]
+    private GameObject findRadius;
+
+    [SerializeField]
     public SendLog sendLog;
 
     [HideInInspector]
     private float period = 0;
-    // Update is called once per frame
+
     void Update() {
+        
         if (foundResource) {
-            
-            if (period > 2f)
+            findRadius.GetComponent<LookForResource>().setMove(false);
+            if (period > 1f)
             {
-                if (gameObjects[resourceCount-1] != null)
+                if (gameObjects[resourceCount - 1] != null)
                 {
-                    gameObjects[resourceCount-1].SendMessage("decreaseResourceAssets", assetDecreaser);
+                    gameObjects[resourceCount - 1].SendMessage("decreaseResourceAssets", assetDecreaser);
                 }
-               else resourceLost(gameObjects[resourceCount-1]);
-                
+                else
+                {
+                    resourceLost(gameObjects[resourceCount - 1]);
+                }
                 period = 0;
             }
             period += UnityEngine.Time.deltaTime;  
@@ -45,7 +54,10 @@ public class FindResource : MonoBehaviour {
             resourceCount++;
             foundResource = true;
             gameObjects.Add(collInfo.gameObject);
-             
+
+
+            parentUnit.GetComponent<MovementController>().setEndPosition(parentUnit.transform.position);
+            parentUnit.GetComponent<MovementController>().setMoving();
         }
     }
 
@@ -61,13 +73,13 @@ public class FindResource : MonoBehaviour {
     private void resourceLost(GameObject gameObject) {
         sendLog.msgCasual("Resource Lost ");
         MeshRenderer meshRend = GetComponent<MeshRenderer>(); ;
-
         gameObjects.RemoveAt(resourceCount-1);
         resourceCount--;
         if (resourceCount == 0)
         {
             meshRend.material.color = Color.green;
             foundResource = false;
+            findRadius.GetComponent<LookForResource>().setMove(true);
         }
     }
 
