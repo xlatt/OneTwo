@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class StructureSpawner : MonoBehaviour {
 
     [SerializeField]
-    private Button unitButton;
+    private List<Button> unitButtons = new List<Button>();
 
     [HideInInspector]
     private bool isSelecting;
@@ -72,7 +72,11 @@ public class StructureSpawner : MonoBehaviour {
                     GameObject barracksObject = GameObject.Instantiate(barracksObjectTemplate);
                     barracksObject.transform.position = new Vector3(position.x, 2, position.z);
                     barracksObject.GetComponent<BuildingController>().setSpawnPoint(barracksObject.transform.position);
-                    unitButton.GetComponent<SpawnPointChanger>().setSpawnPoint(barracksObject);
+
+                    foreach (Button unitButton in unitButtons) {
+                        unitButton.GetComponent<SpawnPointChanger>().setSpawnPoint(barracksObject);
+                    }
+                    
                     Destroy(barracksObjectShadow);
                     selectedBuilding = "none";
                 }

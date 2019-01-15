@@ -10,6 +10,7 @@ TagManager:
   - VolumeSlider
   - Controllable
   - ShadowBuilding
+  - Resource
   layers:
   - Default
   - TransparentFX
