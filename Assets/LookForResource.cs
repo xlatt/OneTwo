@@ -16,8 +16,6 @@ public class LookForResource : MonoBehaviour {
 
     private bool move;
     
-    [HideInInspector]
-    private float period = 0;
 
     private void Start()
     {
