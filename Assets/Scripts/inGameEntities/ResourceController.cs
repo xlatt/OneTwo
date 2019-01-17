@@ -17,7 +17,6 @@ public class ResourceController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (resourceAssets == 0) {
-
             Destroy(gameObject);
         }
 	}
