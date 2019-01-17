@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class SendLog : MonoBehaviour {
@@ -22,12 +20,10 @@ public class SendLog : MonoBehaviour {
             logControl.logText(inputField.text, myColor);
             inputField.text = "";
         }
-
     }
 
 
-    public void msgError(string messageText)
-    {
+    public void msgError(string messageText) {
         logControl.logText("[ERROR] " + messageText, Color.red);
 
     }
@@ -35,8 +31,7 @@ public class SendLog : MonoBehaviour {
         logControl.logText("[WARN] " + messageText, Color.yellow);
 
     }
-    public void msgCasual(string messageText)
-    {
+    public void msgCasual(string messageText) {
         Debug.Log(messageText);
         logControl.logText("[INFO] " + messageText, Color.white);
 

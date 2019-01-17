@@ -16,9 +16,6 @@ public class BuildingController : MonoBehaviour {
     [SerializeField]
     private GameObject spawnPoint;
 
-    [SerializeField]
-    private GameObject unit;
-
     [HideInInspector]
     private float period = 0;
 
