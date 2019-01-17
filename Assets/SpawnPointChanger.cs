@@ -28,7 +28,7 @@ public class SpawnPointChanger : MonoBehaviour {
     private void spawnOnClick(string unitName) {
         if (spawnPointSet) {
             sendLog.msgCasual("[ENTER] spawnOnClick - requesting: " + unitName);
-            unitFactory.GetComponent<UnitFactory>().SpawnUnit(unitName, actualBarracks);
+            unitFactory.GetComponent<UnitFactory>().spawnUnit(unitName, actualBarracks);
         }        
     }
 
